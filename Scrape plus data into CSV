@@ -1,0 +1,69 @@
+#These functions do not need to be called within Android Studio. However, the CSV files do need to be written to a resources file within Android Studio.
+package edu.illinois.cs.cs124.ay2022.mp;
+
+import com.opencsv.CSVWriter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.junit.Test;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+#this function scrapes thae data from a given TripAdvisor url.
+public class ScrapedTest {
+  @Test
+  public void isWorking() throws IOException {
+  #the url below is interchangable for different TripAdvisor locations
+    Document doc = Jsoup.connect("https://www.tripadvisor.com/Attractions-g36538-Activities-Peoria_Illinois.html").timeout(10000).get();
+    Elements thing = doc.select("div.DDJze");
+    String[] placeNames = new String[thing.select("section").size()];
+    String[] imageUrls = new String[thing.select("section").size()];
+    int index = 0;
+    for (Element e : thing.select("section.jemSU")) {
+      Elements textBody = e.select("div.XfVdV");
+      String nameOfPlace = textBody.text();
+      String newPlace = nameOfPlace.replace(",", " ");
+      if (newPlace.length() > 3) {
+        placeNames[index] = newPlace.substring(3);
+      }
+      Elements imageBody = e.select("li.CyFNY");
+      String d = imageBody.toString();
+      String[] adjusted = d.split("<img srcset=");
+      for (String g : adjusted) {
+        String[] temp = g.split(" ");
+        if (temp[0].length() > 10) {
+          imageUrls[index] = temp[0].substring(1);
+        }
+      }
+      index++;
+    }
+    writeTextData("C:/Users/Jason/AndroidStudioProjects/MP-Fall2022-java-jasonph2/app/src/main/resources/recommendations.csv", placeNames);
+    writeImageData("C:/Users/Jason/AndroidStudioProjects/MP-Fall2022-java-jasonph2/app/src/main/resources/images.csv", imageUrls);
+  }
+
+  public static void writeImageData(String filePath, String[] imageUrls) {
+    File images = new File(filePath);
+    try {
+      FileWriter output = new FileWriter(images);
+      CSVWriter writer = new CSVWriter(output);
+      writer.writeNext(imageUrls);
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void writeTextData(String filePath, String[] placeNames) {
+    File text = new File(filePath);
+    try {
+      FileWriter output = new FileWriter(text);
+      CSVWriter writer = new CSVWriter(output);
+      writer.writeNext(placeNames);
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
