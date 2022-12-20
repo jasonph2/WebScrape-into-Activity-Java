@@ -24,7 +24,6 @@
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="Random thing that I hope shows up..."
       android:textSize="18dp"
       android:layout_marginTop="6dp"
       android:textAlignment="center"
