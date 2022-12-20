@@ -14,11 +14,11 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import edu.illinois.cs.cs124.ay2022.mp.R;
-import edu.illinois.cs.cs124.ay2022.mp.application.FavoritePlacesApplication;
-import edu.illinois.cs.cs124.ay2022.mp.models.CustomAdapter;
-import edu.illinois.cs.cs124.ay2022.mp.models.ResultMightThrow;
-import edu.illinois.cs.cs124.ay2022.mp.models.TopRecommendation;
+import R;
+import FavoritePlacesApplication;
+import CustomAdapter;
+import ResultMightThrow;
+import TopRecommendation;
 
 public class Top extends AppCompatActivity implements Consumer<ResultMightThrow<List<List<String>>>> {
   private ArrayList<TopRecommendation> listOfRecommendations;
